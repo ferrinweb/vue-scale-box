@@ -147,8 +147,8 @@ export default {
           this.transition = ''
         }, 400)
       }
-      this.scaleFixX = this.tempScaleFixX = 50000 - this.wrapperPos.width / 2
-      this.scaleFixY = this.tempScaleFixY = 50000 - this.wrapperPos.height / 2
+      this.scaleFixX = this.tempScaleFixX = (50000 - this.wrapperPos.width / 2) | 0
+      this.scaleFixY = this.tempScaleFixY = (50000 - this.wrapperPos.height / 2) | 0
       this.contentReady = true
     },
     update () {
