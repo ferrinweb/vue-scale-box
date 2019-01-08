@@ -4,9 +4,9 @@
 
 > 一个简单的缩放盒子组件，支持鼠标和触摸操作，用于浏览尺寸较大的图片、文档等。
 
-![](https://github.com/ferrinweb/vue-scale-box/raw/master/screenshots1.png)
-![](https://github.com/ferrinweb/vue-scale-box/raw/master/screenshots2.png)
-![](https://github.com/ferrinweb/vue-scale-box/raw/master/screenshots3.png)
+![](https://github.com/ferrinweb/vue-scale-box/raw/master/screenshots/screenshots1.png)
+![](https://github.com/ferrinweb/vue-scale-box/raw/master/screenshots/screenshots2.png)
+![](https://github.com/ferrinweb/vue-scale-box/raw/master/screenshots/screenshots3.png)
 
 ## How to use / 如何使用
 
