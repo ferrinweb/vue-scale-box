@@ -19,7 +19,7 @@
         :style="`${transition};transform:translate3d(${-scaleFixX}px,${-scaleFixY}px,0)`"
       >
         <div class="content-wrapper"
-          :class="{'ready': contentReady}"
+          :class="{'ready': contentReady, 'no-pointer': dragging || fingerZooming}"
           :style="contentStyle"
           ref="content"
         >
@@ -233,5 +233,8 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
+  }
+  .no-pointer{
+    pointer-events: none;
   }
 </style>
