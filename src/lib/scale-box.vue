@@ -50,6 +50,17 @@ export default {
       type: Number,
       default: 0.1
     },
+    /**
+     * Default zoom ratio type when component initialization is complete
+     * 'no-scaling': No scaling, showing original size
+     * 'fit-when-large': Fit the page size only when the content is larger than the page size
+     * 'fit': Fit the page always
+     *  number: Scale according to this value when the value is a positive number
+     */
+    initRatioType: {
+      type: [Number, String],
+      default: 'fit-when-large'
+    },
     originalSizeText: {
       type: String,
       default: 'Original Size'
@@ -57,8 +68,7 @@ export default {
     fitPageText: {
       type: String,
       default: 'Fit Page'
-    },
-
+    }
   },
   data () {
     return {
