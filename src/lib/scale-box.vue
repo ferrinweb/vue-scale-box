@@ -74,6 +74,7 @@ export default {
      * Default zoom ratio type when component initialization is complete
      * 'no-scaling': No scaling, showing original size
      * 'fit-when-large': Fit the page size only when the content is larger than the page size
+     * 'fit-when-small': Fit the page size only when the content is smaller than the page size
      * 'fit': Fit the page always
      *  number: Scale according to this value when the value is a positive number
      */
@@ -186,6 +187,11 @@ export default {
             break
           case 'fit-when-large':
             if (this.wrapperPos.width < this.contentPos.width || this.wrapperPos.height < this.contentPos.height) {
+              this.scaleRatio = this.initScaleRatio
+            }
+            break
+          case 'fit-when-small':
+            if (this.wrapperPos.width > this.contentPos.width || this.wrapperPos.height > this.contentPos.height) {
               this.scaleRatio = this.initScaleRatio
             }
             break

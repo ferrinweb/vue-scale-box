@@ -117,6 +117,7 @@ maxRatio | 最大方法比例 | 3
 minRatio | 最小缩小比例 | 0.1
 originalSizeText | 原始尺寸按钮文本 | Original Size
 fitPageText | 适应页面（当前容器）尺寸 | Fit Page
+initRatioType | 默认初始化缩放模式和比率。<br/>no-scaling：初始化时不进行缩放；<br/>fit-when-large：初始化时仅当内容尺寸大于容器尺寸条件下按照适应页面缩小；<br/>fit-when-small：初始化时仅当内容尺寸小于容器尺寸条件下按照适应页面放大；<br/>fit：初始化时总是按适应页面进行缩放；<br/>number：如果设置为正数数字，则初始化缩放比率设置为该值。 | fit-when-large
 
 ### Methods / 方法
 名称 | 说明 | 参数
