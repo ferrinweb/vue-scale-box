@@ -42,13 +42,33 @@ export default {
     loading
   },
   props: {
+    /**
+     * Maximum zoom ratio
+     */
     maxRatio: {
       type: Number,
       default: 3
     },
+    /**
+     * Minimum zoom ratio
+     */
     minRatio: {
       type: Number,
       default: 0.1
+    },
+    /**
+     * The 'Original Size' button text
+     */
+    originalSizeText: {
+      type: String,
+      default: 'Original Size'
+    },
+    /**
+     * The 'Fit Page' button text
+     */
+    fitPageText: {
+      type: String,
+      default: 'Fit Page'
     },
     /**
      * Default zoom ratio type when component initialization is complete
@@ -60,14 +80,6 @@ export default {
     initRatioType: {
       type: [Number, String],
       default: 'fit-when-large'
-    },
-    originalSizeText: {
-      type: String,
-      default: 'Original Size'
-    },
-    fitPageText: {
-      type: String,
-      default: 'Fit Page'
     }
   },
   data () {
@@ -120,13 +132,15 @@ export default {
       }
     },
     endDrag () {
+      setTimeout(() => {
+        this.dragging = false
+        this.fingerZooming = false
+      })
       this.dragStart = false
-      this.dragging = false
       this.touchZoomBaseValue = 0
       this.tempScaleRatio = 0
       this.tempScaleFixX = this.scaleFixX
       this.tempScaleFixY = this.scaleFixY
-      this.fingerZooming = false
     },
     getFingerDistance (touches) {
       const touch1 = touches[0]
@@ -148,10 +162,9 @@ export default {
       }
     },
     fitPage (smooth) {
-      this.scaleRatio = this.contentWHRatio > this.WHRatio
-        ? this.wrapperPos.width / this.contentPos.width
-        : this.wrapperPos.height / this.contentPos.height
       if (smooth) {
+        this.scaleRatio = this.initScaleRatio
+
         this.transition = 'transition: transform .4s'
         setTimeout(() => {
           this.transition = ''
@@ -161,18 +174,59 @@ export default {
       this.scaleFixY = this.tempScaleFixY = (50000 - this.wrapperPos.height / 2) | 0
       this.contentReady = true
     },
-    update () {
-      this.contentReady = false
-      this.contentStyle = ''
-      this.contentPos = this.content.getBoundingClientRect()
-      if (!this.contentPos.width || !this.contentPos.height) return
-      this.contentWHRatio = this.contentPos.width / this.contentPos.height
-      this.wrapperPos = this.scalePanelWrapper.getBoundingClientRect()
-      this.WHRatio = this.wrapperPos.width / this.wrapperPos.height
+    scaleRatioInit () {
       this.initScaleRatio = this.contentWHRatio > this.WHRatio
         ? this.wrapperPos.width / this.contentPos.width
         : this.wrapperPos.height / this.contentPos.height
-      this.fitPage()
+
+      const initRatioType = this.initRatioType
+      if (typeof initRatioType === 'string') {
+        switch (initRatioType) {
+          case 'no-scaling':
+            break
+          case 'fit-when-large':
+            if (this.wrapperPos.width < this.contentPos.width || this.wrapperPos.height < this.contentPos.height) {
+              this.scaleRatio = this.initScaleRatio
+            }
+            break
+          case 'fit':
+            this.scaleRatio = this.initScaleRatio
+            break
+          default:
+            let number = initRatioType - 0
+            if (number === number) {
+              this.scaleRatio = number
+            } else {
+              console.warn(`initRatioType=${initRatioType} is not a valid property setting.`)
+            }
+        }
+      } else {
+        this.scaleRatio = initRatioType
+      }
+    },
+    update () {
+      const doUpdate = () => {
+        this.contentPos = this.content.getBoundingClientRect()
+        if (!this.contentPos.width || !this.contentPos.height) return
+        this.contentWHRatio = this.contentPos.width / this.contentPos.height
+        this.wrapperPos = this.scalePanelWrapper.getBoundingClientRect()
+        this.WHRatio = this.wrapperPos.width / this.wrapperPos.height
+        this.scaleRatioInit()
+        this.fitPage()
+      }
+
+      this.contentReady = false
+      this.contentStyle = ''
+
+      if (this.scaleRatio !== 1 || this.initScaleRatio !== 1) {
+        this.scaleRatio = this.initScaleRatio = 1
+        this.tempScaleRatio = 0
+        setTimeout(() => {
+          doUpdate()
+        }, 400)
+      } else {
+        doUpdate()
+      }
     }
   },
   watch: {

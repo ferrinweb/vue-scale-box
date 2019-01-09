@@ -6,6 +6,7 @@
     <scale-box ref="scaleBox">
       <img :style="'opacity: ' + (loaded - 0)" @load="sourceLoaded" :src="src">
     </scale-box>
+    <button @click="$refs.scaleBox.update()">Reset and Update</button>
   </div>
 </template>
 
@@ -56,5 +57,9 @@ export default {
   }
   img {
     display: block;
+  }
+  button {
+    display: inline-block;
+    margin: 15px 0;
   }
 </style>
